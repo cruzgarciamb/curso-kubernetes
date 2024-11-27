@@ -3,6 +3,8 @@ package org.aguzman.springcloud.msvc.usuarios.controllers;
 import org.aguzman.springcloud.msvc.usuarios.models.entity.Usuario;
 import org.aguzman.springcloud.msvc.usuarios.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -10,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 public class UsuarioController {
@@ -17,9 +22,17 @@ public class UsuarioController {
     @Autowired
     private UsuarioService service;
 
+    @Autowired private ApplicationContext context;
+
+    // simula la caida del servicio
+    @GetMapping("/crash")
+    public void crash() {
+        ((ConfigurableApplicationContext) context).close();
+    }
+    
     @GetMapping
     public Map<String, List<Usuario>> listar() {
-        return Collections.singletonMap("usuarios", service.listar());
+        return Collections.singletonMap("users", service.listar());
     }
 
     @GetMapping("/{id}")
