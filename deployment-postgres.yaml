@@ -20,7 +20,7 @@ spec:
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
-                configMapKeyRef:
+                secretKeyRef:
                   name: msvc-cursos
                   key: password
             - name: POSTGRES_DB
@@ -35,4 +35,3 @@ spec:
         - name: data-postgres
           persistentVolumeClaim:
             claimName: postgres-pvc
-
